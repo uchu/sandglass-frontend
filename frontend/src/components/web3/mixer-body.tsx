@@ -37,10 +37,12 @@ export const MixerBody: FC = () => {
     <>
       <Tabs.Root defaultValue="tab1" orientation="vertical">
         <Tabs.List className="px-4" aria-label="tabs example">
-          <Tabs.Trigger className="p-4 mr-8" value="tab1">Deposit</Tabs.Trigger>
-          <Tabs.Trigger value="tab2">Withdraw</Tabs.Trigger>
+          <Tabs.Trigger className="p-4 mr-8" value="deposit">Deposit</Tabs.Trigger>
+          <Tabs.Trigger value="withdraw">Withdraw</Tabs.Trigger>
+          <Tabs.Trigger className="p-4 mr-8" value="mixer-swap">Mixer Swap</Tabs.Trigger>
+          <Tabs.Trigger className="p-4 mr-8" value="2fa">2fa</Tabs.Trigger>
         </Tabs.List>
-        <Tabs.Content value="tab1">
+        <Tabs.Content value="deposit">
           <div className="flex max-w-[22rem] grow flex-col gap-4">
             <h2 className="text-center font-mono text-gray-400">Deposit</h2>
 
@@ -76,7 +78,7 @@ export const MixerBody: FC = () => {
             </Form>
           </div>
         </Tabs.Content>
-        <Tabs.Content value="tab2">
+        <Tabs.Content value="withdraw">
           <div className="flex max-w-[22rem] grow flex-col gap-4">
             <h2 className="text-center font-mono text-gray-400">Withdraw</h2>
 
