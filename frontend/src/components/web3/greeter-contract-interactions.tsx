@@ -1,26 +1,20 @@
 'use client'
 
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 
-import { ContractIds } from '@/deployments/deployments'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Tabs from '@radix-ui/react-tabs'
 import
   {
-    contractQuery,
-    decodeOutput,
-    useInkathon,
-    useRegisteredContract,
+    useInkathon
   } from '@scio-labs/use-inkathon'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { contractTxWithToast } from '@/utils/contract-tx-with-toast'
 
 const formSchema = z.object({
   newMessage: z.string().min(1).max(90),
@@ -28,8 +22,6 @@ const formSchema = z.object({
 
 export const GreeterContractInteractions: FC = () => {
   const { api, activeAccount, activeSigner } = useInkathon()
-  const { contract, address: contractAddress } = useRegisteredContract(ContractIds.Greeter)
-  // const { typedContract } = useRegisteredTypedContract(ContractIds.Greeter, GreeterContract)
   const [greeterMessage, setGreeterMessage] = useState<string>()
   const [fetchIsLoading, setFetchIsLoading] = useState<boolean>()
   const form = useForm<z.infer<typeof formSchema>>({
@@ -37,52 +29,7 @@ export const GreeterContractInteractions: FC = () => {
   })
 
   const { register, reset, handleSubmit } = form
-
-  // Fetch Greeting
-  const fetchGreeting = async () => {
-    if (!contract || !api) return
-
-    setFetchIsLoading(true)
-    try {
-      const result = await contractQuery(api, '', contract, 'greet')
-      const { output, isError, decodedOutput } = decodeOutput(result, contract, 'greet')
-      if (isError) throw new Error(decodedOutput)
-      setGreeterMessage(output)
-
-      // NOTE: Currently disabled until `typechain-polkadot` dependencies are upted to support ink! v5
-      // Alternatively: Fetch it with typed contract instance
-      // const typedResult = await typedContract.query.greet()
-      // console.log('Result from typed contract: ', typedResult.value)
-    } catch (e) {
-      console.error(e)
-      toast.error('Error while fetching greeting. Try again…')
-      setGreeterMessage(undefined)
-    } finally {
-      setFetchIsLoading(false)
-    }
-  }
-  useEffect(() => {
-    fetchGreeting()
-  }, [contract])
-
-  // Update Greeting
-  const updateGreeting: SubmitHandler<z.infer<typeof formSchema>> = async ({ newMessage }) => {
-    if (!activeAccount || !contract || !activeSigner || !api) {
-      toast.error('Wallet not connected. Try again…')
-      return
-    }
-
-    try {
-      await contractTxWithToast(api, activeAccount.address, contract, 'setMessage', {}, [
-        newMessage,
-      ])
-      reset()
-    } catch (e) {
-      console.error(e)
-    } finally {
-      fetchGreeting()
-    }
-  }
+ 
 
   if (!api) return null
 
@@ -101,7 +48,7 @@ export const GreeterContractInteractions: FC = () => {
               <Card>
                 <CardContent className="pt-6">
                   <form
-                    onSubmit={handleSubmit(updateGreeting)}
+                    onSubmit={handleSubmit()}
                     className="flex flex-col justify-end gap-2"
                   >
                     <FormItem>
@@ -137,7 +84,7 @@ export const GreeterContractInteractions: FC = () => {
               <Card>
                 <CardContent className="pt-6">
                   <form
-                    onSubmit={handleSubmit(updateGreeting)}
+                    onSubmit={handleSubmit()}
                     className="flex flex-col justify-end gap-2"
                   >
                     <FormItem>

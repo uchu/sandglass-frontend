@@ -85,7 +85,6 @@ export const ChainInfo: FC = () => {
                 Faucet <HiOutlineExternalLink />
               </Link>
             )}
-            {/* Contracts UI Link */}
             {!!activeChain?.rpcUrls?.length && (
               <Link
                 href={`https://contracts-ui.substrate.io/?rpc=${activeChain.rpcUrls[0]}`}

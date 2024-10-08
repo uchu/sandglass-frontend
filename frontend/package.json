@@ -5,7 +5,6 @@
   "scripts": {
     "postinstall": "bash postinstall.sh",
     "dev": "NODE_ENV=development POLKADOTJS_DISABLE_ESM_CJS_WARNING_FLAG=1 next dev",
-    "node": "pnpm run -F contracts node",
     "dev-and-node": "concurrently \"pnpm dev\" \"pnpm node\" --names \"Next,Node\" --kill-others",
     "build": "NODE_ENV=production next build",
     "start": "NODE_ENV=production next start",
@@ -20,7 +19,6 @@
     "@azns/resolver-core": "^1.6.0",
     "@azns/resolver-react": "^1.6.0",
     "@hookform/resolvers": "^3.6.0",
-    "@inkathon/contracts": "workspace:*",
     "@polkadot/api": "^11.3.1",
     "@polkadot/api-contract": "^11.3.1",
     "@polkadot/extension-dapp": "^0.47.5",
