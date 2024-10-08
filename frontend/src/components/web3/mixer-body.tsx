@@ -20,7 +20,7 @@ const formSchema = z.object({
   newMessage: z.string().min(1).max(90),
 })
 
-export const GreeterContractInteractions: FC = () => {
+export const MixerBody: FC = () => {
   const { api, activeAccount, activeSigner } = useInkathon()
   const [greeterMessage, setGreeterMessage] = useState<string>()
   const [fetchIsLoading, setFetchIsLoading] = useState<boolean>()
