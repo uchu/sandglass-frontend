@@ -15,7 +15,7 @@ const formSchema = z.object({
   newMessage: z.string().min(1).max(90),
 })
 
-export const FaCard: FC = () => {
+export const WithdrawCard: FC = () => {
   const [fetchIsLoading, setFetchIsLoading] = useState<boolean>()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -29,7 +29,7 @@ export const FaCard: FC = () => {
       <Form {...form}>
         <Card>
           <CardHeader>
-            <h2 className="text-left font-mono text-gray-400">2fa</h2>
+            <h2 className="text-left font-mono text-gray-400">Withdraw</h2>
           </CardHeader>
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit()} className="flex flex-col justify-end gap-2">

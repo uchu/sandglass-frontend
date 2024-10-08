@@ -4,17 +4,14 @@ import { FC, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Tabs from '@radix-ui/react-tabs'
-import
-  {
-    useInkathon
-  } from '@scio-labs/use-inkathon'
+import { useInkathon } from '@scio-labs/use-inkathon'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { FaCard } from './2fa-card'
+import { DepositCard } from './deposit-card'
+import { MixerSwap } from './mixerswap-card'
+import { WithdrawCard } from './withdraw-card'
 
 const formSchema = z.object({
   newMessage: z.string().min(1).max(90),
@@ -29,90 +26,49 @@ export const MixerBody: FC = () => {
   })
 
   const { register, reset, handleSubmit } = form
- 
 
   if (!api) return null
 
   return (
     <>
-      <Tabs.Root defaultValue="tab1" orientation="vertical">
+      <Tabs.Root defaultValue="deposit" orientation="vertical">
         <Tabs.List className="px-4" aria-label="tabs example">
-          <Tabs.Trigger className="p-4 mr-8" value="deposit">Deposit</Tabs.Trigger>
-          <Tabs.Trigger value="withdraw">Withdraw</Tabs.Trigger>
-          <Tabs.Trigger className="p-4 mr-8" value="mixer-swap">Mixer Swap</Tabs.Trigger>
-          <Tabs.Trigger className="p-4 mr-8" value="2fa">2fa</Tabs.Trigger>
+          <Tabs.Trigger
+            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-fuchsia-700"
+            value="deposit"
+          >
+            Deposit
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-fuchsia-700"
+            value="withdraw"
+          >
+            Withdraw
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-fuchsia-700"
+            value="mixer-swap"
+          >
+            Mixer Swap
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-fuchsia-700"
+            value="2fa"
+          >
+            2fa
+          </Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="deposit">
-          <div className="flex max-w-[22rem] grow flex-col gap-4">
-            <h2 className="text-center font-mono text-gray-400">Deposit</h2>
-
-            <Form {...form}>
-              <Card>
-                <CardContent className="pt-6">
-                  <form
-                    onSubmit={handleSubmit()}
-                    className="flex flex-col justify-end gap-2"
-                  >
-                    <FormItem>
-                      <FormLabel className="text-base">Amount</FormLabel>
-                      <FormControl>
-                        <div className="flex gap-2">
-                          <Input
-                            disabled={form.formState.isSubmitting}
-                            {...register('newMessage')}
-                          />
-                          <Button
-                            type="submit"
-                            className="bg-primary font-bold"
-                            disabled={fetchIsLoading || form.formState.isSubmitting}
-                            isLoading={form.formState.isSubmitting}
-                          >
-                            Submit
-                          </Button>
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  </form>
-                </CardContent>
-              </Card>
-            </Form>
-          </div>
+          <DepositCard/>
         </Tabs.Content>
         <Tabs.Content value="withdraw">
-          <div className="flex max-w-[22rem] grow flex-col gap-4">
-            <h2 className="text-center font-mono text-gray-400">Withdraw</h2>
-
-            <Form {...form}>
-              <Card>
-                <CardContent className="pt-6">
-                  <form
-                    onSubmit={handleSubmit()}
-                    className="flex flex-col justify-end gap-2"
-                  >
-                    <FormItem>
-                      <FormLabel className="text-base">Amount</FormLabel>
-                      <FormControl>
-                        <div className="flex gap-2">
-                          <Input
-                            disabled={form.formState.isSubmitting}
-                            {...register('newMessage')}
-                          />
-                          <Button
-                            type="submit"
-                            className="bg-primary font-bold"
-                            disabled={fetchIsLoading || form.formState.isSubmitting}
-                            isLoading={form.formState.isSubmitting}
-                          >
-                            Submit
-                          </Button>
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  </form>
-                </CardContent>
-              </Card>
-            </Form>
-          </div>
+          <WithdrawCard/>
+        </Tabs.Content>
+        <Tabs.Content value="mixer-swap">
+          <MixerSwap/>
+        </Tabs.Content>
+        <Tabs.Content value="2fa">
+          <FaCard/>
         </Tabs.Content>
       </Tabs.Root>
     </>
