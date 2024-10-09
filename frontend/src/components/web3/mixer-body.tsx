@@ -34,25 +34,25 @@ export const MixerBody: FC = () => {
       <Tabs.Root defaultValue="deposit" orientation="vertical">
         <Tabs.List className="px-4" aria-label="tabs example">
           <Tabs.Trigger
-            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-fuchsia-700"
+            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-primary"
             value="deposit"
           >
             Deposit
           </Tabs.Trigger>
           <Tabs.Trigger
-            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-fuchsia-700"
+            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-primary"
             value="withdraw"
           >
             Withdraw
           </Tabs.Trigger>
           <Tabs.Trigger
-            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-fuchsia-700"
+            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-primary"
             value="mixer-swap"
           >
             Mixer Swap
           </Tabs.Trigger>
           <Tabs.Trigger
-            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-fuchsia-700"
+            className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-primary"
             value="2fa"
           >
             2fa

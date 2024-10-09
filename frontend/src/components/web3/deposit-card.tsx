@@ -3,7 +3,7 @@
 import { FC, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -12,7 +12,8 @@ import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
 const formSchema = z.object({
-  newMessage: z.string().min(1).max(90),
+  amount: z.string().min(1).max(90),
+  faCode: z.string().min(1).max(90),
 })
 
 export const DepositCard: FC = () => {
@@ -22,29 +23,47 @@ export const DepositCard: FC = () => {
     resolver: zodResolver(formSchema),
   })
 
-  const { register, reset, handleSubmit } = form
+  const { register, reset, handleSubmit, formState: { errors } } = form
+// Update Greeting
+const updateGreeting: SubmitHandler<z.infer<typeof formSchema>> = async ({ amount, faCode }) => {
+  console.log(amount, faCode)
+}
 
   return (
     <div className="my-8 flex max-w-[220rem] grow flex-col gap-4">
       <Form {...form}>
         <Card>
           <CardHeader>
-            <h2 className="text-left font-mono text-gray-400">Deposit</h2>
+            <h2 className="text-left text-primary font-sans font-bold text-2xl">Deposit</h2>
           </CardHeader>
           <CardContent className="pt-6">
-            <form onSubmit={handleSubmit()} className="flex flex-col justify-end gap-2">
+            <form onSubmit={handleSubmit(updateGreeting)} className="flex flex-col justify-end gap-2">
               <FormItem>
                 <FormLabel className="text-base">Amount</FormLabel>
                 <FormControl>
                   <div className="flex gap-2">
-                    <Input disabled={form.formState.isSubmitting} {...register('newMessage')} />
-                    <Button
+                    <Input type="number" disabled={form.formState.isSubmitting}  {...register('amount', { required: true })} />
+                  </div>
+                </FormControl>
+              </FormItem>
+              <FormItem>
+                <FormLabel className="text-base">2fa code(Optional)</FormLabel>
+                <FormControl>
+                  <div className="flex gap-2">
+                    <Input disabled={form.formState.isSubmitting} {...register('faCode')} />
+                  </div>
+                </FormControl>
+              </FormItem>
+              <FormItem>
+                <FormControl>
+                  <div className="flex justify-center p-4">
+                  <Button
                       type="submit"
                       className="bg-primary font-bold"
                       disabled={fetchIsLoading || form.formState.isSubmitting}
                       isLoading={form.formState.isSubmitting}
                     >
-                      Submit
+                      Deposit
                     </Button>
                   </div>
                 </FormControl>
