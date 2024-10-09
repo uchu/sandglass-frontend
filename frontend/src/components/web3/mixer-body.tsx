@@ -55,7 +55,7 @@ export const MixerBody: FC = () => {
             className="mr-8 border-2 border-solid border-transparent p-4 data-[state=active]:border-b-primary"
             value="2fa"
           >
-            2fa
+            2 FA
           </Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="deposit">

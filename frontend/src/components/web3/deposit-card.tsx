@@ -25,7 +25,7 @@ export const DepositCard: FC = () => {
 
   const { register, reset, handleSubmit, formState: { errors } } = form
 // Update Greeting
-const updateGreeting: SubmitHandler<z.infer<typeof formSchema>> = async ({ amount, faCode }) => {
+const deposit: SubmitHandler<z.infer<typeof formSchema>> = async ({ amount, faCode }) => {
   console.log(amount, faCode)
 }
 
@@ -37,7 +37,7 @@ const updateGreeting: SubmitHandler<z.infer<typeof formSchema>> = async ({ amoun
             <h2 className="text-left text-primary font-sans font-bold text-2xl">Deposit</h2>
           </CardHeader>
           <CardContent className="pt-6">
-            <form onSubmit={handleSubmit(updateGreeting)} className="flex flex-col justify-end gap-2">
+            <form onSubmit={handleSubmit(deposit)} className="flex flex-col justify-end gap-2">
               <FormItem>
                 <FormLabel className="text-base">Amount</FormLabel>
                 <FormControl>
