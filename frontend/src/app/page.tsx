@@ -19,8 +19,8 @@ export default function HomePage() {
     <>
       <div className="container relative flex grow flex-col py-10">
         {/* Title */}
-        <div className='flex justify-between items-center'>
-          <h2 className=''>sandglass</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="">sandglass</h2>
           {/* Connect Wallet Button */}
           <ConnectButton />
         </div>
