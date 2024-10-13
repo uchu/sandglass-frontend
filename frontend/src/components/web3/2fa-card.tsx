@@ -13,12 +13,7 @@ import { generateMerkleTree } from '@/utils/2fa'
 
 export const FaCard: FC = () => {
   const { api, activeAccount, activeSigner } = useInkathon()
-
-  const [image, setImage] = useState('')
   const [secret, setSecret] = useState('')
-  const [validCode, setValidCode] = useState('')
-  const [isCodeValid, setIsCodeValid] = useState(null)
-  const [inputValue, setInputValue] = useState('')
   const [uri, setURI] = useState('')
 
   const [error, setError] = useState(false)
@@ -90,12 +85,14 @@ export const FaCard: FC = () => {
           <h2 className="text-left font-sans text-2xl font-bold text-primary">2FA</h2>
         </CardHeader>
         <CardContent className="pt-6">
-          <Button onClick={deploy}>New 2fa key</Button>
-          <div className="py-4 text-xl text-primary">
-            Scan the QR code using Google Authenticator or manually input the setup key
+          <div className='flex justify-center'>
+            <Button onClick={deploy}>New 2fa key</Button>
           </div>
-          <div className="py-4 text-xl">Setup key: {secret}</div>
-          <div>
+          <div className="py-4 text-xl text-primary">
+            Scan the QR code using Google Authenticator or manually <br/> input the setup key
+          </div>
+          <div className="py-4 text-base">Setup key: {secret}</div>
+          <div className='flex justify-center'>
             <Image src={uri} width={240} height={240} alt="QR Code" />
           </div>
         </CardContent>

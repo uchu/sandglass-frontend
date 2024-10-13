@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useInkathon } from '@scio-labs/use-inkathon'
+import toast from 'react-hot-toast'
 
 const formSchema = z.object({
   amount: z.string().min(1).max(90),
@@ -24,9 +26,27 @@ export const DepositCard: FC = () => {
   })
 
   const { register, reset, handleSubmit, formState: { errors } } = form
+  const { api, activeAccount, activeSigner } = useInkathon()
+
 // Update Greeting
 const deposit: SubmitHandler<z.infer<typeof formSchema>> = async ({ amount, faCode }) => {
   console.log(amount, faCode)
+  if (!activeAccount || !activeSigner || !api) {
+    toast.error('Wallet not connected. Try again…')
+    return
+  }
+  const txHash = await api.tx.mixer
+  .deposit([amount, faCode])
+  .signAndSend(activeAccount.address, { signer: activeSigner }, ({ status }) => {
+    if (status.isInBlock) {
+      console.log(`Completed at block hash #${status.asInBlock.toString()}`)
+    } else {
+      console.log(`Current status: ${status.type}`)
+    }
+  })
+  console.log(`Submitted with hash ${txHash}`);
+
+  
 }
 
   return (
