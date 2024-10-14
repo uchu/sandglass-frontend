@@ -5,7 +5,7 @@ import base32 from 'hi-base32'
 import QRCode from 'qrcode'
 import { TOTP } from 'totp-generator'
 
-const urlPrefix = 'otpauth://totp/Harmony devnet?secret='
+const urlPrefix = 'otpauth://totp/sandglassnet?secret='
 const urlSuffix = '&issuer=sandglass'
 
 async function generateQRcode(secret: any) {
@@ -52,8 +52,6 @@ export async function generateMerkleTree() {
 
 export async function generateInput(otp: any) {
   const hashes = localStorage.getItem('OTPhashes').split(',').map(BigInt)
-
-  console.log(hashes)
 
   const poseidon = await buildPoseidon()
 
