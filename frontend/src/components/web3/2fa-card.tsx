@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { FC, useEffect, useState } from 'react'
 
-import { compactAddLength, hexToU8a, stringToU8a } from '@polkadot/util'
+import { compactAddLength, stringToU8a } from '@polkadot/util'
 import { useInkathon } from '@scio-labs/use-inkathon'
 import toast from 'react-hot-toast'
 
@@ -58,7 +58,7 @@ export const FaCard: FC = () => {
     setSecret(_secret)
     setURI(_uri)
 
-    const root_u8a = hexToU8a('0x' + root.toString(16))
+    const root_u8a = stringToU8a(root.toString())
     const compact_root = compactAddLength(root_u8a)
 
     //console.log('@@@ root is', root, JSON.stringify(compact_root))
