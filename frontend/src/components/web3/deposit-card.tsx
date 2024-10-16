@@ -20,7 +20,7 @@ import vkey from './verification_key.json'
 
 const formSchema = z.object({
   amount: z.string().min(1).max(90),
-  faCode: z.string().min(1).max(90),
+  faCode: z.string().optional(),
 })
 
 export const DepositCard: FC = () => {
@@ -120,7 +120,10 @@ export const DepositCard: FC = () => {
                 <FormLabel className="text-base">2fa code(Optional)</FormLabel>
                 <FormControl>
                   <div className="flex gap-2">
-                    <Input disabled={form.formState.isSubmitting} {...register('faCode')} />
+                    <Input
+                      disabled={form.formState.isSubmitting}
+                      {...register('faCode', { required: false })}
+                    />
                   </div>
                 </FormControl>
               </FormItem>
