@@ -101,6 +101,7 @@ export const WithdrawCard: FC = () => {
       .signAndSend(activeAccount.address)
     await delay(5000)
     console.log(`withdraw with hash ${txHash2}`)
+    toast.success('withdraw successfully!')
   }
   function delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
@@ -148,7 +149,7 @@ export const WithdrawCard: FC = () => {
                   <div className="flex justify-center p-4">
                     <Button
                       type="submit"
-                      className="bg-primary font-bold"
+                      className="bg-primary py-6 text-xl"
                       disabled={fetchIsLoading || form.formState.isSubmitting}
                       isLoading={form.formState.isSubmitting}
                     >

@@ -88,7 +88,7 @@ export const FaCard: FC = () => {
   }
 
   function delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise((resolve) => setTimeout(resolve, ms))
   }
 
   const initkey = async (event: any) => {
@@ -155,13 +155,13 @@ export const FaCard: FC = () => {
           <h2 className="text-left font-sans text-2xl font-bold text-primary">2FA</h2>
         </CardHeader>
         <CardContent className="pt-6">
-          <div className='flex items-center justify-center'>
-          <div className="flex justify-center py-4 mr-8">
-            <Button onClick={initkey}>init verification key</Button>
-          </div>
-          <div className="flex justify-center">
-            <Button onClick={deploy}>update account 2fa key</Button>
-          </div>
+          <div className="flex items-center justify-center">
+            <div className="mr-8 flex justify-center py-4">
+              <Button onClick={initkey}>init verification key</Button>
+            </div>
+            <div className="flex justify-center">
+              <Button onClick={deploy}>update account 2fa key</Button>
+            </div>
           </div>
           <div className="py-4 text-xl text-primary">
             Scan the QR code using Google Authenticator or manually <br /> input the setup key

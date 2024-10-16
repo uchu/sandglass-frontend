@@ -2,11 +2,11 @@
 
 import { FC, useState } from 'react'
 
-import { Button } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -33,7 +33,7 @@ export const MixerSwap: FC = () => {
       <Form {...form}>
         <Card>
           <CardHeader>
-            <h2 className="text-left text-primary font-sans font-bold text-2xl">Mixer Swap</h2>
+            <h2 className="text-left font-sans text-2xl font-bold text-primary">Mixer Swap</h2>
           </CardHeader>
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit(withdraw)} className="flex flex-col justify-end gap-2">
@@ -41,7 +41,10 @@ export const MixerSwap: FC = () => {
                 <FormLabel className="text-base">Note</FormLabel>
                 <FormControl>
                   <div className="flex gap-2">
-                    <Input disabled={form.formState.isSubmitting} {...register('note', {required: true})} />
+                    <Input
+                      disabled={form.formState.isSubmitting}
+                      {...register('note', { required: true })}
+                    />
                   </div>
                 </FormControl>
               </FormItem>
@@ -50,7 +53,10 @@ export const MixerSwap: FC = () => {
                 <FormLabel className="text-base">recipient address</FormLabel>
                 <FormControl>
                   <div className="flex gap-2">
-                    <Input disabled={form.formState.isSubmitting} {...register('address', {required: true})} />
+                    <Input
+                      disabled={form.formState.isSubmitting}
+                      {...register('address', { required: true })}
+                    />
                   </div>
                 </FormControl>
               </FormItem>
@@ -58,16 +64,19 @@ export const MixerSwap: FC = () => {
                 <FormLabel className="text-base">order id</FormLabel>
                 <FormControl>
                   <div className="flex gap-2">
-                    <Input disabled={form.formState.isSubmitting} {...register('orderId', {required: true})} />
+                    <Input
+                      disabled={form.formState.isSubmitting}
+                      {...register('orderId', { required: true })}
+                    />
                   </div>
                 </FormControl>
               </FormItem>
               <FormItem>
                 <FormControl>
                   <div className="flex justify-center p-4">
-                  <Button
+                    <Button
                       type="submit"
-                      className="bg-primary font-bold"
+                      className="bg-primary py-6 text-xl"
                       disabled={fetchIsLoading || form.formState.isSubmitting}
                       isLoading={form.formState.isSubmitting}
                     >

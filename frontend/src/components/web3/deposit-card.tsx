@@ -129,7 +129,7 @@ export const DepositCard: FC = () => {
                   <div className="flex justify-center p-4">
                     <Button
                       type="submit"
-                      className="bg-primary font-bold"
+                      className="bg-primary py-6 text-xl"
                       disabled={fetchIsLoading || form.formState.isSubmitting}
                       isLoading={form.formState.isSubmitting}
                     >
