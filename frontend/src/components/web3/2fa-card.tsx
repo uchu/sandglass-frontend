@@ -151,7 +151,7 @@ export const FaCard: FC = () => {
           <h2 className="text-left font-sans text-2xl font-bold text-primary">2FA</h2>
         </CardHeader>
         <CardContent className="pt-6">
-          <div className="flex justify-center">
+          <div className="flex justify-center py-4">
             <Button onClick={initkey}>init verification key</Button>
           </div>
           <div className="flex justify-center">
