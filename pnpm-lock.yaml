@@ -189,6 +189,9 @@ importers:
       '@types/bn.js':
         specifier: ~5.1.5
         version: 5.1.6
+      '@types/circomlibjs':
+        specifier: ^0.1.6
+        version: 0.1.6
       '@types/downloadjs':
         specifier: ^1.4.5
         version: 1.4.6
@@ -3393,6 +3396,10 @@ packages:
       '@types/node': 20.16.10
       '@types/responselike': 1.0.3
     dev: false
+
+  /@types/circomlibjs@0.1.6:
+    resolution: {integrity: sha512-yF174bPDaiKgejlZzCSqKwZaqXhlxMcVEHrAtstFohwP05OjtvHXOdxO6HQeTg8WwIdgMg7MJb1WyWZdUCGlPQ==}
+    dev: true
 
   /@types/downloadjs@1.4.6:
     resolution: {integrity: sha512-mp3w70vsaiLRT9ix92fmI9Ob2yJAPZm6tShJtofo2uHbN11G2i6a0ApIEjBl/kv3e9V7Pv7jMjk1bUwYWvMHvA==}

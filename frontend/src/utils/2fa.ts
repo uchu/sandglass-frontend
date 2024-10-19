@@ -51,7 +51,7 @@ export async function generateMerkleTree() {
 }
 
 export async function generateInput(otp: any) {
-  const hashes = localStorage.getItem('OTPhashes').split(',').map(BigInt)
+  const hashes = localStorage.getItem('OTPhashes')?.split(',')?.map(BigInt)
 
   const poseidon = await buildPoseidon()
 
@@ -59,6 +59,9 @@ export async function generateInput(otp: any) {
 
   let currentNode = poseidon.F.toObject(poseidon([BigInt(currentTime), BigInt(otp)]))
   //console.log(currentNode);
+  if (!hashes) {
+    return
+  }
 
   if (hashes.indexOf(currentNode) < 0) {
     throw new Error('Invalid OTP.')
