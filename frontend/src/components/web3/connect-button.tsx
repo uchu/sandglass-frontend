@@ -209,7 +209,7 @@ export const ConnectButton: FC<ConnectButtonProps> = () => {
       {reducibleBalanceFormatted !== undefined && (
         <div className="flex min-w-[0rem] items-center justify-center gap-2 rounded-2xl border bg-gray-900 px-4 py-3 font-mono text-sm font-bold text-foreground">
           <div>
-            {reducibleBalanceFormatted?.replace('Unit', 'Dot')}
+            {reducibleBalanceFormatted?.replace('Unit', 'DOT')}
             {(!reducibleBalance || reducibleBalance?.isZero()) && (
               <Tooltip>
                 <TooltipTrigger className="cursor-help">
@@ -220,7 +220,7 @@ export const ConnectButton: FC<ConnectButtonProps> = () => {
             )}
           </div>
           <div>
-            {btc.reducibleBalanceFormatted?.replace('Unit', 'VBtc')}
+            {btc.reducibleBalance?.toString()} VBTC
             {(!btc.reducibleBalance || btc.reducibleBalance?.isZero()) && (
               <Tooltip>
                 <TooltipTrigger className="cursor-help">
