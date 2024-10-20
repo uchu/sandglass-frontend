@@ -37,15 +37,16 @@ export const MixerSwap: FC = () => {
 
   const { register, reset, handleSubmit } = form
   const withdraw: SubmitHandler<z.infer<typeof formSchema>> = async ({
-    note,
+    noteFile,
     address,
     orderId,
   }) => {
-    console.log(note, address, orderId)
+    console.log(noteFile, address, orderId)
     if (!activeAccount || !activeSigner || !api) {
       toast.error('Wallet not connected. Try again…')
       return
     }
+    const note = noteFile[0].name
     const sk2 = BigInt(note)
     const cmt2 = poseidon2([sk2, BigInt(0)])
     const hashFun = (left: any, right: any) => poseidon2([BigInt(left), BigInt(right)]).toString()
