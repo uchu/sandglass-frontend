@@ -18,9 +18,6 @@ import { Form, FormControl, FormItem, FormLabel, FormMessage } from '@/component
 import { Input } from '@/components/ui/input'
 
 const formSchema = z.object({
-  // note: z.instanceof(File).refine((file) => file.size > 0, {
-  //   message: 'File is required',
-  // }),
   note: z.instanceof(FileList).refine((fileList) => fileList.length > 0, {
     message: 'place upload the note',
   }),

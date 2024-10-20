@@ -19,8 +19,10 @@ import { Input } from '@/components/ui/input'
 import { useOrder } from '@/hooks/useOrder'
 
 const formSchema = z.object({
-  note: z.string().min(1).max(90),
-  address: z.string().min(1).max(90),
+  noteFile: z.instanceof(FileList).refine((fileList) => fileList.length > 0, {
+    message: 'Please upload the note',
+  }),
+  address: z.string().min(1, { message: 'Address is required' }),
   orderId: z.string(),
 })
 
@@ -132,9 +134,42 @@ export const MixerSwap: FC = () => {
                 <FormLabel className="text-base">Note</FormLabel>
                 <FormControl>
                   <div className="flex gap-2">
+                    <label
+                      htmlFor="dropzone-file1"
+                      className="flex h-24 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-input bg-background hover:bg-input"
+                    >
+                      {form.getValues('noteFile') && (
+                        <div className="flex flex-col items-center justify-center">
+                          <svg
+                            className="mb-4 h-8 w-8 text-gray-50"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 20 16"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                            />
+                          </svg>
+                          <p className="text-sm text-gray-50">
+                            <span className="font-semibold">Click to upload</span> the note
+                          </p>
+                        </div>
+                      )}
+                      {form.getValues('noteFile') && (
+                        <div>{form.getValues('noteFile')?.[0]?.name}</div>
+                      )}
+                    </label>
                     <Input
+                      id="dropzone-file1"
+                      className="hidden"
+                      type="file"
                       disabled={form.formState.isSubmitting}
-                      {...register('note', { required: true })}
+                      {...register('noteFile', { required: true })}
                     />
                   </div>
                 </FormControl>
