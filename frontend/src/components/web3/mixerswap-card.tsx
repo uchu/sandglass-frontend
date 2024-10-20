@@ -14,7 +14,7 @@ import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
+import { Form, FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useOrder } from '@/hooks/useOrder'
 
@@ -35,7 +35,12 @@ export const MixerSwap: FC = () => {
   })
   const { api, activeAccount, activeSigner } = useInkathon()
 
-  const { register, reset, handleSubmit } = form
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = form
   const withdraw: SubmitHandler<z.infer<typeof formSchema>> = async ({
     noteFile,
     address,
@@ -139,7 +144,7 @@ export const MixerSwap: FC = () => {
                       htmlFor="dropzone-file1"
                       className="flex h-24 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-input bg-background hover:bg-input"
                     >
-                      {form.getValues('noteFile') && (
+                      {(!form.getValues('noteFile') || form.getValues('noteFile').length === 0) && (
                         <div className="flex flex-col items-center justify-center">
                           <svg
                             className="mb-4 h-8 w-8 text-gray-50"
@@ -174,6 +179,7 @@ export const MixerSwap: FC = () => {
                     />
                   </div>
                 </FormControl>
+                <FormMessage>{errors.noteFile?.message}</FormMessage>
               </FormItem>
 
               <FormItem>
@@ -186,6 +192,7 @@ export const MixerSwap: FC = () => {
                     />
                   </div>
                 </FormControl>
+                <FormMessage>{errors.address?.message}</FormMessage>
               </FormItem>
               <FormItem>
                 <FormLabel className="text-base">order id</FormLabel>
