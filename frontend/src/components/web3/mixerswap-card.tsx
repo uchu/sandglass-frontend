@@ -109,6 +109,7 @@ export const MixerSwap: FC = () => {
     console.log(`swap with hash ${txHash2}`)
     toast.success('swap successfully!')
   }
+
   function delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
@@ -180,13 +181,15 @@ export const MixerSwap: FC = () => {
             <div>
               <table style={{ width: 500 }}>
                 <tbody>
-                  <tr>
-                    <td>orderId|</td>
-                    <td> baseCurrencyId|</td>
-                    <td> baseAmount|</td>
-                    <td> targetCurrencyId|</td>
-                    <td> targetAmount</td>
-                  </tr>
+                  {orders.length > 0 && (
+                    <tr>
+                      <td>orderId|</td>
+                      <td> baseCurrencyId|</td>
+                      <td> baseAmount|</td>
+                      <td> targetCurrencyId|</td>
+                      <td> targetAmount</td>
+                    </tr>
+                  )}
                   {orders.map((item: any) => {
                     return (
                       <tr key={item.orderId}>
