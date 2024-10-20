@@ -14,12 +14,17 @@ import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
+import { Form, FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
 const formSchema = z.object({
-  note: z.string().min(1).max(90),
-  address: z.string().min(1).max(90),
+  // note: z.instanceof(File).refine((file) => file.size > 0, {
+  //   message: 'File is required',
+  // }),
+  note: z.instanceof(FileList).refine((fileList) => fileList.length > 0, {
+    message: 'place upload the note',
+  }),
+  address: z.string().min(1, { message: 'Address is required' }),
 })
 
 export const WithdrawCard: FC = () => {
@@ -31,13 +36,23 @@ export const WithdrawCard: FC = () => {
 
   const { api, activeAccount, activeSigner } = useInkathon()
 
-  const { register, reset, handleSubmit } = form
-  const withdraw: SubmitHandler<z.infer<typeof formSchema>> = async ({ note, address }) => {
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = form
+  const withdraw: SubmitHandler<z.infer<typeof formSchema>> = async ({
+    note: NoteFile,
+    address,
+  }) => {
+    console.log(NoteFile, address)
     if (!activeAccount || !activeSigner || !api) {
       toast.error('Wallet not connected. Try again…')
       return
     }
-    console.log(note, address)
+    const note = NoteFile[0].name
+    console.log(note)
     const sk2 = BigInt(note)
     const cmt2 = poseidon2([sk2, BigInt(0)])
     const hashFun = (left: any, right: any) => poseidon2([BigInt(left), BigInt(right)]).toString()
@@ -125,12 +140,44 @@ export const WithdrawCard: FC = () => {
                 <FormLabel className="text-base">Note</FormLabel>
                 <FormControl>
                   <div className="flex gap-2">
+                    <label
+                      htmlFor="dropzone-file"
+                      className="flex h-24 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-input bg-background hover:bg-input"
+                    >
+                      {!form.getValues('note') && (
+                        <div className="flex flex-col items-center justify-center">
+                          <svg
+                            className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 20 16"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                            />
+                          </svg>
+                          <p className="text-sm text-gray-50">
+                            <span className="font-semibold">Click to upload</span> the note
+                          </p>
+                        </div>
+                      )}
+                      {form.getValues('note') && <div>{form.getValues('note')?.[0]?.name}</div>}
+                    </label>
                     <Input
+                      id="dropzone-file"
+                      className="hidden"
+                      type="file"
                       disabled={form.formState.isSubmitting}
                       {...register('note', { required: true })}
                     />
                   </div>
                 </FormControl>
+                <FormMessage>{errors.note?.message}</FormMessage>
               </FormItem>
 
               <FormItem>
@@ -143,6 +190,7 @@ export const WithdrawCard: FC = () => {
                     />
                   </div>
                 </FormControl>
+                <FormMessage>{errors.address?.message}</FormMessage>
               </FormItem>
               <FormItem>
                 <FormControl>
