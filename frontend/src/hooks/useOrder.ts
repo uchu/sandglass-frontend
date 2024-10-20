@@ -4,7 +4,7 @@ import { ApiPromise } from '@polkadot/api'
 import { useInkathon } from '@scio-labs/use-inkathon'
 
 export type OrderData = {
-  orderId: string
+  orderId: number
   baseCurrencyId: string
   baseAmount: number
   targetCurrencyId: string
@@ -16,16 +16,28 @@ export const parseOrderData = async (api: ApiPromise, data?: any): Promise<Order
 
   const orders: OrderData[] = []
   data.forEach((item: any) => {
-    console.log(`${item[0]}:  value ${item[1].toHuman()}`)
+    console.log(`("@@@ data key: ${item[0]},  value: ${item[1].toString()}`)
+
+    const o = JSON.parse(item[1].toString())
+
+    const baseItem = o.baseCurrencyId
+    const baseFirstKey = Object.keys(baseItem)[0]
+    const strBaseCurrencyId = baseItem[baseFirstKey]
+
+    const targetItem = o.targetCurrencyId
+    const targetFirstKey = Object.keys(targetItem)[0]
+    const strTargetCurrencyId = targetItem[targetFirstKey]
 
     orders.push({
-      orderId: item[0].toString(),
-      baseCurrencyId: item[1].baseCurrencyId,
-      baseAmount: item[1].baseAmount,
-      targetCurrencyId: item[1].targetCurrencyId,
-      targetAmount: item[1].targetAmount,
+      orderId: parseInt(item[0].toHuman()),
+      baseCurrencyId: strBaseCurrencyId,
+      baseAmount: o.baseAmount,
+      targetCurrencyId: strTargetCurrencyId,
+      targetAmount: o.targetAmount,
     })
   })
+
+  orders.sort((a, b) => a.orderId - b.orderId)
 
   return orders
 }
@@ -34,21 +46,8 @@ export const getOrder = async (api: ApiPromise): Promise<OrderData[]> => {
   // Query the chain and parse data
   const allEntries: any = await api.query.swap.orders.entries()
 
-  const orders: OrderData[] = []
-  allEntries.forEach((item: any) => {
-    const o = item[1].toHuman()
-    console.log(`${item[0]}:  value ${o}`)
+  const orders = parseOrderData(api, allEntries)
 
-    orders.push({
-      orderId: item[0].toHuman(),
-      baseCurrencyId: JSON.stringify(o.baseCurrencyId),
-      baseAmount: o.baseAmount,
-      targetCurrencyId: JSON.stringify(o.targetCurrencyId),
-      targetAmount: o.targetAmount,
-    })
-  })
-
-  console.log(`orders:  ${JSON.stringify(orders)}`)
   return orders
 }
 
