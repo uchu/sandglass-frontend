@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useMixerVerificationKey } from '@/hooks/useMixerVerificationKey'
 
 import vkey from './verification_key.json'
 
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 export const DepositCard: FC = () => {
   const [fetchIsLoading, setFetchIsLoading] = useState<boolean>()
+  const mixerVerificationKey = useMixerVerificationKey(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,15 +47,18 @@ export const DepositCard: FC = () => {
       toast.error('Wallet not connected. Try again…')
       return
     }
-    const a2vkey = stringToU8a(JSON.stringify(vkey))
-    const compact_a2vkey = compactAddLength(a2vkey)
 
-    const t = await api.tx.mixer
-      .setupVerification(compact_a2vkey)
-      .signAndSend(activeAccount.address)
-    await delay(10000)
+    if ('' === mixerVerificationKey) {
+      const a2vkey = stringToU8a(JSON.stringify(vkey))
+      const compact_a2vkey = compactAddLength(a2vkey)
 
-    console.log(`Submitted with hash ${t}`)
+      const t = await api.tx.mixer
+        .setupVerification(compact_a2vkey)
+        .signAndSend(activeAccount.address)
+      await delay(10000)
+
+      console.log(`Submitted with hash ${t}`)
+    }
     const sk2 = BigInt(random(64)) //random number
     const cmt2 = poseidon2([sk2, BigInt(0)])
     console.log('@@@hash: ', cmt2.toString(16), cmt2.toString())
@@ -111,6 +116,7 @@ export const DepositCard: FC = () => {
                     <Input
                       type="number"
                       disabled={form.formState.isSubmitting}
+                      value={1000}
                       {...register('amount', { required: true })}
                     />
                   </div>
