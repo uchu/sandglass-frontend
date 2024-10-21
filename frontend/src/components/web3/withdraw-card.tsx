@@ -18,7 +18,7 @@ import { Form, FormControl, FormItem, FormLabel, FormMessage } from '@/component
 import { Input } from '@/components/ui/input'
 
 const formSchema = z.object({
-  note: z.instanceof(FileList).refine((fileList) => fileList.length > 0, {
+  note: z.any().refine((fileList: any[]) => fileList.length > 0, {
     message: 'place upload the note',
   }),
   address: z.string().min(1, { message: 'Address is required' }),
@@ -141,7 +141,7 @@ export const WithdrawCard: FC = () => {
                       htmlFor="dropzone-file"
                       className="flex h-24 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-input bg-background hover:bg-input"
                     >
-                      {!form.getValues('note') && (
+                      {(!form.getValues('note') || form.getValues('note').length === 0) && (
                         <div className="flex flex-col items-center justify-center">
                           <svg
                             className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
@@ -174,7 +174,7 @@ export const WithdrawCard: FC = () => {
                     />
                   </div>
                 </FormControl>
-                <FormMessage>{errors.note?.message}</FormMessage>
+                <FormMessage>{errors.note?.message as string}</FormMessage>
               </FormItem>
 
               <FormItem>
