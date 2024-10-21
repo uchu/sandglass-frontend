@@ -123,57 +123,57 @@ export const DepositCard: FC = () => {
   }
 
   return (
-      <div className="my-8 flex max-w-[220rem] grow flex-col gap-4">
-        <Form {...form}>
-          <Card>
-            <CardHeader>
-              <h2 className="text-left font-sans text-2xl font-bold text-primary">Deposit</h2>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <form onSubmit={handleSubmit(deposit)} className="flex flex-col justify-end gap-2">
-                <FormItem>
-                  <FormLabel className="text-base">Amount</FormLabel>
-                  <FormControl>
-                    <div className="flex gap-2">
-                      <Input
-                          type="number"
-                          disabled={form.formState.isSubmitting}
-                          readonly
-                          value={1000}
-                          {...register('amount', { required: true })}
-                      />
-                    </div>
-                  </FormControl>
-                </FormItem>
-                <FormItem>
-                  <FormLabel className="text-base">2fa code</FormLabel>
-                  <FormControl>
-                    <div className="flex gap-2">
-                      <Input
-                          disabled={form.formState.isSubmitting}
-                          {...register('faCode', { required: false })}
-                      />
-                    </div>
-                  </FormControl>
-                </FormItem>
-                <FormItem>
-                  <FormControl>
-                    <div className="flex justify-center p-4">
-                      <Button
-                          type="submit"
-                          className="bg-primary py-6 text-xl"
-                          disabled={fetchIsLoading || form.formState.isSubmitting}
-                          isLoading={form.formState.isSubmitting}
-                      >
-                        Deposit
-                      </Button>
-                    </div>
-                  </FormControl>
-                </FormItem>
-              </form>
-            </CardContent>
-          </Card>
-        </Form>
-      </div>
+    <div className="my-8 flex max-w-[220rem] grow flex-col gap-4">
+      <Form {...form}>
+        <Card>
+          <CardHeader>
+            <h2 className="text-left font-sans text-2xl font-bold text-primary">Deposit</h2>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <form onSubmit={handleSubmit(deposit)} className="flex flex-col justify-end gap-2">
+              <FormItem>
+                <FormLabel className="text-base">Amount</FormLabel>
+                <FormControl>
+                  <div className="flex gap-2">
+                    <Input
+                        type="number"
+                        disabled={form.formState.isSubmitting}
+                        readOnly
+                        value={1000}
+                        {...register('amount', { required: true })}
+                    />
+                  </div>
+                </FormControl>
+              </FormItem>
+              <FormItem>
+                <FormLabel className="text-base">2fa code</FormLabel>
+                <FormControl>
+                  <div className="flex gap-2">
+                    <Input
+                        disabled={form.formState.isSubmitting}
+                        {...register('faCode', { required: false })}
+                    />
+                  </div>
+                </FormControl>
+              </FormItem>
+              <FormItem>
+                <FormControl>
+                  <div className="flex justify-center p-4">
+                    <Button
+                        type="submit"
+                        className="bg-primary py-6 text-xl"
+                        disabled={fetchIsLoading || form.formState.isSubmitting}
+                        isLoading={form.formState.isSubmitting}
+                    >
+                      Deposit
+                    </Button>
+                  </div>
+                </FormControl>
+              </FormItem>
+            </form>
+          </CardContent>
+        </Card>
+      </Form>
+    </div>
   )
 }
