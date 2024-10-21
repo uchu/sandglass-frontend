@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input'
 import { useOrder } from '@/hooks/useOrder'
 
 const formSchema = z.object({
-  noteFile: z.instanceof(FileList).refine((fileList) => fileList.length > 0, {
+  noteFile: z.any().refine((fileList) => fileList.length > 0, {
     message: 'Please upload the note',
   }),
   address: z.string().min(1, { message: 'Address is required' }),
