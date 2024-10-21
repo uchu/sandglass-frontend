@@ -9,10 +9,15 @@ import toast from 'react-hot-toast'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { useOtpVerificationKey } from '@/hooks/useOtpVerificationKey'
 import { generateMerkleTree } from '@/utils/2fa'
+
+import otpvkey from './otp_verification_key.json'
 
 export const FaCard: FC = () => {
   const { api, activeAccount, activeSigner } = useInkathon()
+  const otpVerificationKey = useOtpVerificationKey(false)
+
   const [secret, setSecret] = useState('')
   const [uri, setURI] = useState('')
   const [root, setRoot] = useState('')
@@ -29,17 +34,9 @@ export const FaCard: FC = () => {
     }
 
     event.preventDefault()
-    setError(false)
-    setDeployed(false)
 
-    setDeploying(true)
-
-    const setupVerification = async () => {
-      const vkey = fetch('otp_verification_key.json')
-
-      //const vkey = fs.readFileSync('otp_verification_key.json', 'utf8')
-      //console.log("vkey is", vkey);
-      const a2vkey = stringToU8a(JSON.stringify(vkey))
+    if ('' === otpVerificationKey) {
+      const a2vkey = stringToU8a(JSON.stringify(otpvkey))
       const compact_a2vkey = compactAddLength(a2vkey)
 
       const t = await api.tx.otp
@@ -49,9 +46,21 @@ export const FaCard: FC = () => {
             console.log(`Completed at block hash #${status.asInBlock.toString()}`)
           } else {
             console.log(`Current status: ${status.type}`)
+            if (status.isFinalized) {
+              toast.success('init verification key successfully!')
+            }
           }
         })
+
+      await delay(10000)
+
+      console.log(`Submitted with hash ${t}`)
     }
+
+    setError(false)
+    setDeployed(false)
+
+    setDeploying(true)
 
     const [_uri, _secret, root] = await generateMerkleTree()
 
@@ -68,7 +77,10 @@ export const FaCard: FC = () => {
         if (status.isInBlock) {
           console.log(`Completed at block hash #${status.asInBlock.toString()}`)
         } else {
-          console.log(`Current status: ${status.type}`)
+          console.log(`@@@Current status: ${status.type}`)
+          if (status.isFinalized) {
+            toast.success('setup 2fa key successfully!')
+          }
         }
       })
       .catch((error: any) => {
@@ -89,32 +101,6 @@ export const FaCard: FC = () => {
 
   function delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
-  }
-
-  const initkey = async (event: any) => {
-    if (!activeAccount || !activeSigner || !api) {
-      toast.error('Wallet not connected. Try again…')
-      return
-    }
-    event.preventDefault()
-
-    const response = await fetch('otp_verification_key.json')
-    const vkey = await response.json()
-
-    const a2vkey = stringToU8a(JSON.stringify(vkey))
-    const compact_a2vkey = compactAddLength(a2vkey)
-
-    const t = await api.tx.otp
-      .setupVerification(compact_a2vkey)
-      .signAndSend(activeAccount.address, { signer: activeSigner }, ({ status }) => {
-        if (status.isInBlock) {
-          console.log(`Completed at block hash #${status.asInBlock.toString()}`)
-        } else {
-          console.log(`Current status: ${status.type}`)
-        }
-      })
-
-    event.preventDefault()
   }
 
   useEffect(() => {
@@ -156,9 +142,6 @@ export const FaCard: FC = () => {
         </CardHeader>
         <CardContent className="pt-6">
           <div className="flex items-center justify-center">
-            <div className="mr-8 flex justify-center py-4">
-              <Button onClick={initkey}>init verification key</Button>
-            </div>
             <div className="flex justify-center">
               <Button onClick={deploy}>update account 2fa key</Button>
             </div>
