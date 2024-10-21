@@ -18,7 +18,6 @@ import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useMixerVerificationKey } from '@/hooks/useMixerVerificationKey'
 import { generateInput } from '@/utils/2fa'
-
 import vkey from './verification_key.json'
 
 const formSchema = z.object({
@@ -55,8 +54,8 @@ export const DepositCard: FC = () => {
       const compact_a2vkey = compactAddLength(a2vkey)
 
       const t = await api.tx.mixer
-          .setupVerification(compact_a2vkey)
-          .signAndSend(activeAccount.address)
+        .setupVerification(compact_a2vkey)
+        .signAndSend(activeAccount.address)
       await delay(10000)
 
       console.log(`Submitted with hash ${t}`)
@@ -139,7 +138,7 @@ export const DepositCard: FC = () => {
                       <Input
                           type="number"
                           disabled={form.formState.isSubmitting}
-                          readOnly
+                          readonly
                           value={1000}
                           {...register('amount', { required: true })}
                       />
