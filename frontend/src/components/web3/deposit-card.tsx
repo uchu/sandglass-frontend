@@ -136,11 +136,11 @@ export const DepositCard: FC = () => {
                 <FormControl>
                   <div className="flex gap-2">
                     <Input
-                        type="number"
-                        disabled={form.formState.isSubmitting}
-                        readOnly
-                        value={1000}
-                        {...register('amount', { required: true })}
+                      type="number"
+                      disabled={form.formState.isSubmitting}
+                      readOnly
+                      value={1000}
+                      {...register('amount', { required: true })}
                     />
                   </div>
                 </FormControl>
@@ -150,8 +150,8 @@ export const DepositCard: FC = () => {
                 <FormControl>
                   <div className="flex gap-2">
                     <Input
-                        disabled={form.formState.isSubmitting}
-                        {...register('faCode', { required: false })}
+                      disabled={form.formState.isSubmitting}
+                      {...register('faCode', { required: false })}
                     />
                   </div>
                 </FormControl>
@@ -160,10 +160,10 @@ export const DepositCard: FC = () => {
                 <FormControl>
                   <div className="flex justify-center p-4">
                     <Button
-                        type="submit"
-                        className="bg-primary py-6 text-xl"
-                        disabled={fetchIsLoading || form.formState.isSubmitting}
-                        isLoading={form.formState.isSubmitting}
+                      type="submit"
+                      className="bg-primary py-6 text-xl"
+                      disabled={fetchIsLoading || form.formState.isSubmitting}
+                      isLoading={form.formState.isSubmitting}
                     >
                       Deposit
                     </Button>
