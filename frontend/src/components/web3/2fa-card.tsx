@@ -46,9 +46,6 @@ export const FaCard: FC = () => {
             console.log(`Completed at block hash #${status.asInBlock.toString()}`)
           } else {
             console.log(`Current status: ${status.type}`)
-            if (status.isFinalized) {
-              toast.success('init verification key successfully!')
-            }
           }
         })
 

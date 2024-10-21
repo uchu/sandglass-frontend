@@ -116,6 +116,7 @@ export const DepositCard: FC = () => {
                     <Input
                       type="number"
                       disabled={form.formState.isSubmitting}
+                      readonly
                       value={1000}
                       {...register('amount', { required: true })}
                     />
@@ -123,7 +124,7 @@ export const DepositCard: FC = () => {
                 </FormControl>
               </FormItem>
               <FormItem>
-                <FormLabel className="text-base">2fa code(Optional)</FormLabel>
+                <FormLabel className="text-base">2fa code</FormLabel>
                 <FormControl>
                   <div className="flex gap-2">
                     <Input
