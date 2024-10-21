@@ -179,7 +179,7 @@ export const MixerSwap: FC = () => {
                     />
                   </div>
                 </FormControl>
-                <FormMessage>{errors.noteFile?.message}</FormMessage>
+                <FormMessage>{errors.noteFile?.message as string}</FormMessage>
               </FormItem>
 
               <FormItem>

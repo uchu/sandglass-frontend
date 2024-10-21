@@ -174,7 +174,7 @@ export const WithdrawCard: FC = () => {
                     />
                   </div>
                 </FormControl>
-                <FormMessage>{errors.note?.message}</FormMessage>
+                <FormMessage>{errors.note?.message as string}</FormMessage>
               </FormItem>
 
               <FormItem>
