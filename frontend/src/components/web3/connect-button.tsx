@@ -51,7 +51,7 @@ export const ConnectButton: FC<ConnectButtonProps> = () => {
     setActiveAccount,
   } = useInkathon()
   const { reducibleBalance, reducibleBalanceFormatted } = useBalance(activeAccount?.address, true, {
-    forceUnit: false,
+    forceUnit: 'DOT',
     fixedDecimals: 2,
     removeTrailingZeros: true,
   })
