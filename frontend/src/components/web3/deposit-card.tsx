@@ -9,6 +9,7 @@ import random from 'crypto-random-bigint'
 import { poseidon2 } from 'poseidon-bls12381'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { groth16 } from 'snarkjs'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -16,7 +17,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Form, FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useMixerVerificationKey } from '@/hooks/useMixerVerificationKey'
-
+import { generateInput } from '@/utils/2fa'
 import vkey from './verification_key.json'
 
 const formSchema = z.object({
@@ -59,25 +60,46 @@ export const DepositCard: FC = () => {
 
       console.log(`Submitted with hash ${t}`)
     }
+
     const sk2 = BigInt(random(64)) //random number
     const cmt2 = poseidon2([sk2, BigInt(0)])
-    console.log('@@@hash: ', cmt2.toString(16), cmt2.toString())
-    console.log('@@@sk2: ', sk2)
-
     const a = hexToU8a('0x' + cmt2.toString(16))
     const compact_a = compactAddLength(a)
 
-    const txHash = await api.tx.mixer
-      .deposit(compact_a)
-      .signAndSend(activeAccount.address, { signer: activeSigner }, ({ status }) => {
-        if (status.isInBlock) {
-          console.log(`Completed at block hash #${status.asInBlock.toString()}`)
-        } else {
-          console.log(`Current status: ${status.type}`)
-        }
+    if (faCode) {
+      const input = await generateInput(faCode).catch((error: any) => {
+        toast.error('Invalid OTP code')
+        throw error
       })
-    await delay(10000)
 
+      const { proof, publicSignals } = await groth16.fullProve(input, 'otp.wasm', 'otp_0001.zkey')
+      const a2proof = stringToU8a(JSON.stringify(proof))
+      const compact_a2proof = compactAddLength(a2proof)
+      const a2root = stringToU8a(publicSignals[0])
+      const compact_a2root = compactAddLength(a2root)
+
+      const txHash = await api.tx.mixer
+          .depositWithNaiveOtp(compact_a, compact_a2proof, compact_a2root, input?.time)
+          .signAndSend(activeAccount.address, { signer: activeSigner }, ({ status }) => {
+            if (status.isInBlock) {
+              console.log(`Completed at block hash #${status.asInBlock.toString()}`)
+            } else {
+              console.log(`Current status: ${status.type}`)
+            }
+          })
+    } else {
+      const txHash = await api.tx.mixer
+          .deposit(compact_a)
+          .signAndSend(activeAccount.address, { signer: activeSigner }, ({ status }) => {
+            if (status.isInBlock) {
+              console.log(`Completed at block hash #${status.asInBlock.toString()}`)
+            } else {
+              console.log(`Current status: ${status.type}`)
+            }
+          })
+    }
+
+    await delay(10000)
     downloadProof(sk2)
     toast.success('deposit successfully!')
   }
@@ -116,7 +138,7 @@ export const DepositCard: FC = () => {
                     <Input
                       type="number"
                       disabled={form.formState.isSubmitting}
-                      readonly
+                      readOnly
                       value={1000}
                       {...register('amount', { required: true })}
                     />
